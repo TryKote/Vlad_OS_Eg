@@ -36,6 +36,5 @@ void client::_out(int fd) {
 
 client::~client() {
     close(m_read_pipefd);
-    exit(EXIT_SUCCESS);
 }
 
