@@ -19,10 +19,12 @@ char *d_watcher::listing() {
     DIR *pDir;
 
     pDir = opendir(m_working_directory);
+
     if (pDir == nullptr) {
-        printf ("Cannot open directory");
-        return nullptr;
+        perror(strerror(errno));
+        throw std::runtime_error(strerror(errno));
     }
+
     std::stringstream directory_listing;
     while ((pDirent = readdir(pDir)) != nullptr) {
         directory_listing << _parse(pDirent) << std::endl;
@@ -42,6 +44,7 @@ char *d_watcher::_parse(struct dirent *pDirent) {
     output_string << pDirent->d_name << "\t";
     output_string << sfile.st_mtim.tv_sec << "\t";
     output_string << sfile.st_size << "\t";
+
     switch (pDirent->d_type) {
         case DT_DIR:
             output_string << "D" << "\t";
@@ -68,8 +71,7 @@ char *d_watcher::_parse(struct dirent *pDirent) {
             throw std::invalid_argument("Incorrect file type!");
     }
 
-    printf("%s\n", output_string.str().c_str());
-
+    const unsigned long size = output_string.str().length();
     char* c_output_string = new char[output_string.str().length()];
     strcpy(c_output_string, output_string.str().c_str());
 

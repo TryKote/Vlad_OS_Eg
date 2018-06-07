@@ -2,17 +2,17 @@
 // Created by kote on 07.06.18.
 //
 
-#include "../headers/client.h"
+#include "../headers/message_reader.h"
 
-client::client(int &read_pipefd) {
+message_reader::message_reader(int &read_pipefd) {
     m_read_pipefd = read_pipefd;
 }
 
-void client::fd_close() {
+void message_reader::fd_close() {
     close(m_read_pipefd);
 }
 
-void client::out_pipe_data(int fd) {
+void message_reader::out_pipe_data(int fd) {
     switch(fd) {
         case 1:
             _out(STDERR_FILENO);
@@ -28,13 +28,13 @@ void client::out_pipe_data(int fd) {
     }
 }
 
-void client::_out(int fd) {
+void message_reader::_out(int fd) {
     char buf;
     while (read(m_read_pipefd, &buf, 1) > 0)
         write(fd, &buf, 1);
 }
 
-client::~client() {
+message_reader::~message_reader() {
     close(m_read_pipefd);
 }
 

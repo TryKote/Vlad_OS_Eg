@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <cerrno>
 
 #ifndef VLAD_OS_EG_D_WATCHER_H
 #define VLAD_OS_EG_D_WATCHER_H
@@ -22,7 +23,6 @@ public:
 
 private:
     char* _parse(struct dirent *pDirent);
-
     char* m_working_directory;
 
 };

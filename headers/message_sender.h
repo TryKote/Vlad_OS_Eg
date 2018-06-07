@@ -4,17 +4,19 @@
 #include <cstring>
 #include <unistd.h>
 #include <stdexcept>
+#include "d_watcher.h"
 
 #ifndef VLAD_OS_EG_LIST_DIRECTORY_SERVER_H
 #define VLAD_OS_EG_LIST_DIRECTORY_SERVER_H
 
-class list_directory_server {
+class message_sender {
+    /* Send message in pipe channel */
 public:
-    explicit list_directory_server(int &write_pipefd);
-    ~list_directory_server();
+    explicit message_sender(int &write_pipefd);
+    ~message_sender();
     void fd_close();
-
     ssize_t *operator<<(char* arg);
+
 private:
     int m_write_pipefd;
 
